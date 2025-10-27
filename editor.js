@@ -64,6 +64,7 @@ export function redrawCanvas() {
 
     // Draw background layers
     sceneState.backgrounds.forEach(bgUrl => {
+        if (!bgUrl) return; // Skip null or empty URLs
         const img = backgroundImages[bgUrl];
         if (img && img.complete && img.naturalHeight !== 0) {
             ctx.drawImage(img, 0, 0, canvas.getBoundingClientRect().width, canvas.getBoundingClientRect().height);

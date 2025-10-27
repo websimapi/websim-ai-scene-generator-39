@@ -8,6 +8,12 @@ function renderBackgroundLayers(selectedAsset) {
     if (!layersContainer) return;
 
     layersContainer.innerHTML = ''; // Clear existing layers
+    
+    // Ensure sceneState.backgrounds is an array
+    if (!Array.isArray(sceneState.backgrounds)) {
+        sceneState.backgrounds = [];
+        markAsDirty();
+    }
 
     for (let i = 0; i < 3; i++) {
         const layerDiv = document.createElement('div');
