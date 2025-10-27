@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Scene Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Generating...</p>
+    </div>
+    <div id="toolbar">
+        <div id="scene-prompt-container">
+            <input type="text" id="scene-prompt" placeholder="A vibrant, magical forest...">
+            <button id="generate-scene-btn" title="Generate Scene"><img src="generate_icon.png" alt="Generate"></button>
+        </div>
+        <div class="dropdown">
+            <button id="tools-dropdown-btn" class="tool-btn" title="Tools"><img src="tools_icon.png" alt="Tools"></button>
+            <div id="tools-dropdown-content" class="dropdown-content">
+                <button id="tool-move" class="tool-btn active" title="Move Tool"><img src="move_icon.png" alt="Move"><span>Move</span></button>
+                <button id="tool-add" class="tool-btn" title="Add Last Asset"><img src="add_icon.png" alt="Add"><span>Add</span></button>
+                <button id="tool-delete" class="tool-btn" title="Delete Selected Asset"><img src="delete_icon.png" alt="Delete"><span>Delete</span></button>
+                <button id="import-json-btn" class="tool-btn" title="Import Scene from JSON"><img src="import_icon.png" alt="Import"><span>Import</span></button>
+                <button id="export-json-btn" class="tool-btn" title="Export Scene to JSON"><img src="export_icon.png" alt="Export"><span>Export</span></button>
+                <button id="save-btn" class="tool-btn" title="Save Scene"><img src="save_icon.png" alt="Save"><span>Save</span></button>
+            </div>
+        </div>
+    </div>
+    <div id="app-container">
+        <div id="left-panel">
+            <button id="toggle-left-panel" class="panel-toggle" title="Hide Panel"><img src="hide_icon.png" alt="Hide"></button>
+            
+            <div class="control-group">
+                
+                <div class="input-with-icon">
+                    <input type="text" id="asset-prompt" placeholder="Type here to generate asset">
+                    <button id="asset-transparent-toggle" class="transparent-toggle" title="Toggle Transparent Background">
+                        <img src="./eye_slash_icon.png" alt="Toggle Transparency">
+                    </button>
+                    <button id="generate-asset-btn" title="Generate Asset">
+                        <img id="generate-asset-icon" src="object_icon.png" alt="Generate Asset">
+                    </button>
+                </div>
+                <div id="asset-type-selector">
+                    <button class="asset-type-btn active" data-type="Object" title="Object"><img src="object_icon.png" alt="Object"></button>
+                    <button class="asset-type-btn" data-type="Portal" title="Portal"><img src="portal_icon.png" alt="Portal"></button>
+                    <button class="asset-type-btn" data-type="NPC" title="NPC"><img src="npc_icon.png" alt="NPC"></button>
+                    <button class="asset-type-btn" data-type="Item" title="Item"><img src="item_icon.png" alt="Item"></button>
+                    <button class="asset-type-btn" data-type="Character" title="Character"><img src="character_icon.png" alt="Character"></button>
+                    <button class="asset-type-btn" data-type="Background" title="Background"><img src="background_icon.png" alt="Background"></button>
+                </div>
+            </div>
+            <div id="asset-library">
+                <!-- Generated assets will appear here -->
+            </div>
+        </div>
+        <div id="main-content">
+            <canvas id="editor-canvas"></canvas>
+        </div>
+        <div id="mobile-panel">
+            <div class="mobile-resize-handle">
+                <label id="mobile-asset-type-label"></label>
+                <label id="mobile-transparency-label"></label>
+            </div>
+            <div id="mobile-panel-content">
+                <div id="mobile-left-panel-content">
+                    <!-- left panel content will be moved here by JS -->
+                </div>
+                <div id="mobile-right-panel-content">
+                    <!-- right panel content will be moved here by JS -->
+                </div>
+            </div>
+        </div>
+        <div id="right-panel">
+            <button id="toggle-right-panel" class="panel-toggle" title="Hide Panel"><img src="hide_icon.png" alt="Hide"></button>
+             <div id="properties-panel-content">
+                <p>Select an asset to see its properties.</p>
+             </div>
+        </div>
+    </div>
+    <div id="floating-tools-container"></div>
+    <script type="module" src="main.js"></script>
+    <script type="module" src="ui.js"></script>
+    <script type="module" src="propertiesPanel.js"></script>
+    <script type="module" src="promptAnimator.js"></script>
+    <script type="module" src="panelManager.js"></script>
+    <script type="module" src="fileHandlers.js"></script>
+    <script type="module" src="stateManager.js"></script>
+    <script type="module" src="dragDrop.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

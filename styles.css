@@ -1,0 +1,677 @@
+:root {
+    --bg-color: #1a1a1a;
+    --panel-bg: #2a2a2e;
+    --border-color: #444;
+    --text-color: #f0f0f0;
+    --primary-color: #007bff;
+    --primary-hover: #0056b3;
+    --input-bg: #333;
+    --danger-color: #dc3545;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+#app-container {
+    display: flex;
+    height: calc(100vh - 60px); /* Adjust for top bar */
+    transition: height 0.3s ease-in-out;
+}
+
+#app-container.full-height {
+    height: 100vh;
+}
+
+#left-panel, #right-panel {
+    width: 250px;
+    background-color: var(--panel-bg);
+    padding: 15px;
+    padding-top: 15px; /* Removed extra top padding */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative; /* Needed for positioning the toggle button */
+}
+
+#right-panel {
+    width: 280px;
+}
+
+h2, h3 {
+    margin: 0 0 10px 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
+
+#toolbar {
+    height: 60px;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center; /* Vertically align items */
+    background-color: var(--panel-bg);
+    border-bottom: 1px solid var(--border-color);
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+}
+
+#toolbar.hidden {
+    height: 0;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    border-bottom: none;
+}
+
+#scene-prompt-container {
+    display: flex;
+    align-items: center; /* Align textarea and button */
+    flex-grow: 1; /* Allow it to take up available space */
+    position: relative; /* For positioning the button inside */
+}
+
+#scene-prompt-container input {
+    flex-grow: 1;
+    height: 40px; /* Match button height */
+    padding: 8px;
+    padding-right: 45px; /* Space for the button */
+    box-sizing: border-box;
+}
+
+#scene-prompt-container button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px;
+    height: 35px;
+    padding: 5px;
+    flex-shrink: 0; /* Prevent button from shrinking */
+    background-color: var(--input-bg);
+    border: none;
+}
+#scene-prompt-container button:hover {
+    background-color: var(--primary-hover);
+}
+
+#scene-prompt-container button img {
+    width: 100%;
+    height: 100%;
+    filter: invert(1);
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon input {
+    padding-right: 75px; /* Make space for two icons */
+}
+
+.transparent-toggle {
+    position: absolute;
+    right: 40px; /* Position to the left of the new generate button */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    padding: 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.transparent-toggle img {
+    width: 100%;
+    height: 100%;
+    filter: invert(0.8);
+    transition: opacity 0.2s;
+}
+
+.transparent-toggle:hover {
+    background-color: transparent;
+}
+
+.transparent-toggle.toggled-on img {
+    opacity: 0.5;
+}
+
+#asset-type-selector {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.asset-type-btn {
+    flex-grow: 1;
+    height: 40px;
+    padding: 6px;
+    background-color: var(--input-bg);
+    border: 3px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.2s; /* Added transition for border width */
+}
+
+.asset-type-btn:hover {
+    border-color: var(--primary-hover);
+    background-color: #444;
+}
+
+.asset-type-btn.active {
+    background-color: var(--primary-color);
+    border-width: 5px; /* Use border width to indicate active state */
+}
+
+.asset-type-btn img {
+    width: 100%;
+    height: 100%;
+    filter: invert(1);
+    object-fit: contain;
+}
+
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-group input {
+    width: auto;
+}
+
+label {
+    font-size: 0.9em;
+}
+
+input, select, textarea, button {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    box-sizing: border-box;
+    transition: border-color 0.2s; /* Add transition for smooth color changes */
+}
+
+#asset-prompt {
+    border-width: 3px;
+}
+
+#generate-asset-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px;
+    height: 35px;
+    padding: 5px;
+    border: none;
+    background-color: var(--input-bg);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#generate-asset-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+#generate-asset-btn img {
+    width: 100%;
+    height: 100%;
+    filter: invert(1);
+    object-fit: contain;
+}
+
+textarea, button {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    box-sizing: border-box;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #888; /* A nice medium grey for placeholders */
+}
+
+.placeholder-style {
+    color: #888;
+}
+
+@keyframes text-colorize {
+    from { color: #888; } /* Placeholder color */
+    to { color: var(--text-color); } /* Final input text color */
+}
+
+.colorize-animation {
+    animation: text-colorize 0.5s forwards;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    background-color: var(--primary-color);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+}
+
+#asset-library {
+    border: 1px dashed var(--border-color);
+    min-height: 100px;
+    flex-grow: 1;
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-content: flex-start;
+}
+
+.library-asset {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    background-color: var(--input-bg);
+    border: 2px solid transparent;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.library-asset:hover {
+    border-color: var(--primary-color);
+}
+
+.library-asset.selected {
+    /* Generic selected style is now handled in JS to be brighter version of type color */
+}
+
+/* Asset-type specific outline colors on selection */
+/* These are now injected by ui.js to stay in sync with editor.js colors */
+
+
+#main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    position: relative;
+    height: 100%; /* I am adding this to ensure it resizes with its parent */
+    box-sizing: border-box; /* I am adding this to account for padding */
+}
+
+.tool-btn {
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+}
+.tool-btn.active {
+    background-color: var(--primary-color);
+}
+.tool-btn img {
+    width: 100%;
+    height: 100%;
+    filter: invert(1);
+}
+#tool-delete {
+    background-color: var(--danger-color);
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown.mobile-only {
+    display: none;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: var(--panel-bg);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 10;
+    border-radius: 4px;
+    padding: 5px;
+    border: 1px solid var(--border-color);
+    flex-direction: column;
+    gap: 5px;
+}
+
+.dropdown-content.show {
+    display: flex;
+}
+
+.dropdown:hover .dropdown-content {
+    /* display: flex; - This is now controlled by JS */
+    /* flex-direction: column; */
+    /* gap: 5px; */
+}
+
+.dropdown-content button {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+}
+
+.dropdown-content button span {
+    color: var(--text-color);
+}
+
+.dropdown-content button img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+    flex-shrink: 0;
+}
+
+#floating-tools-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1001; /* Above mobile panel handle */
+    display: none;
+}
+
+#floating-tools-container .dropdown-content {
+    /* Adjust dropdown to open upwards */
+    top: auto;
+    bottom: 100%;
+    right: 0;
+}
+
+
+#save-btn.dirty {
+    animation: pulse 1.5s infinite;
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 10px 10px rgba(0, 123, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+    }
+}
+
+
+#editor-canvas {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    border: 1px solid var(--border-color);
+    cursor: default;
+}
+
+.panel-toggle {
+    display: none; /* Hide on desktop by default */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 105;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    background-color: rgba(42, 42, 46, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.panel-toggle img {
+    width: 100%;
+    height: 100%;
+    filter: invert(1);
+}
+
+#toggle-left-panel img {
+    transform: rotate(180deg);
+}
+
+#mobile-panel-toggles {
+    display: none; /* Hide on desktop */
+}
+
+
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none; /* Initially hidden */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid var(--primary-color);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loading-overlay p {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+#properties-panel-content input, #properties-panel-content textarea, #properties-panel-content button {
+    margin-bottom: 10px;
+}
+
+.background-layer-slot {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 5px;
+    background-color: var(--input-bg);
+}
+
+.layer-thumbnail {
+    width: 40px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.background-layer-slot span {
+    flex-grow: 1;
+    font-size: 0.9em;
+}
+
+.remove-layer-btn {
+    width: 24px;
+    height: 24px;
+    padding: 2px;
+    background-color: var(--danger-color);
+    border: none;
+    color: white;
+    font-weight: bold;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+#mobile-asset-type-label {
+    display: none;
+    margin: 0;
+    padding: 0 10px; /* Give it some space from the edge */
+    font-size: 0.8em; /* Smaller text */
+    font-weight: bold;
+    color: var(--text-color);
+    line-height: 30px; /* Vertically center in the 30px handle */
+    pointer-events: none; /* Make sure it doesn't interfere with dragging */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#mobile-transparency-label {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: var(--text-color);
+    line-height: 30px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+
+.mobile-resize-handle {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background-color: transparent;
+    cursor: ns-resize;
+    touch-action: none;
+    z-index: 110;
+}
+
+.mobile-resize-handle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 5px;
+    background-color: var(--border-color);
+    border-radius: 3px;
+}
+
+.dropdown {
+    display: none; /* Hide toolbar dropdown */
+}
+
+.dropdown.mobile-only {
+    display: inline-block; /* Show mobile-specific dropdown container */
+}
+
+@media (max-width: 768px) {
+    #mobile-asset-type-label {
+        display: block;
+    }
+
+    #mobile-transparency-label {
+        display: block;
+    }
+
+    #app-container {
+        flex-direction: column;
+        /* transition: height 0.3s ease-in-out; */ /* Removed to be controlled by JS */
+        height: calc(100vh - 60px); /* I am ensuring base height is set correctly for mobile layout */
+    }
+
+    #app-container.panel-visible {
+        height: calc(50vh - 60px); /* Simplified calculation and ensures correct resizing */
+    }
+
+    #main-content {
+        flex-grow: 1;
+        /* The height is now controlled by the parent #app-container */
+        padding-bottom: 0; /* Remove space for toggles */
+    }
+
+    #left-panel, #right-panel {
+        display: none; /* Hide original panels on mobile */
+    }
+
+    #mobile-panel {
+        display: block; /* Show the mobile panel */
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50vh;
+        z-index: 100;
+        transform: translateY(calc(100% - 30px)); /* Start collapsed to show handle */
+        transition: transform 0.3s ease-in-out, height 0s;
+        box-sizing: border-box;
+        border-top: 2px solid var(--border-color);
+        background-color: var(--panel-bg);
+    }
+
+    #mobile-panel.visible {
+        transform: translateY(0);
+    }
+    
+    #mobile-panel-content {
+        height: 100%;
+        overflow-y: auto;
+        padding: 10px;
+        padding-top: 30px; /* Space for handle */
+        box-sizing: border-box;
+    }
+    
+    #mobile-panel-content .control-group {
+        padding-bottom: 10px;
+    }
+
+    /* Hide desktop panel toggles on mobile */
+    .panel-toggle {
+       display: none;
+    }
+
+    #mobile-panel-toggles {
+        display: none;
+    }
+    
+    #mobile-panel.visible #mobile-asset-type-label {
+        opacity: 1;
+    }
+}
