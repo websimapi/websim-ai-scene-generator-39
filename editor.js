@@ -314,18 +314,23 @@ function onDrop(e) {
 
     try {
         const assetData = JSON.parse(assetDataString);
-        
-        // Don't allow dropping backgrounds into the scene as objects
+
         if (assetData.type === 'Background') {
-            // Find the library item and select it to show properties
-             const libraryItem = document.querySelector(`.library-asset[data-asset-url="${assetData.url}"]`);
-            if (libraryItem) {
-                selectLibraryAsset(libraryItem);
+            if (sceneState.backgrounds.length < 3) {
+                sceneState.backgrounds.push(assetData.url);
+                markAsDirty();
+                redrawCanvas();
+
+                const libraryItem = document.querySelector(`.library-asset[data-asset-url="${assetData.url}"]`);
+                if (libraryItem) {
+                    selectLibraryAsset(libraryItem);
+                }
+            } else {
+                alert('Maximum of 3 background layers reached.');
             }
-            alert("Backgrounds can't be placed as objects. Select it in the library to set it as the scene background.");
             return;
         }
-
+        
         const pos = getLogicalCoordsFromEvent(e);
         
         const assetSize = LOGICAL_WIDTH / 15; // Make asset size relative

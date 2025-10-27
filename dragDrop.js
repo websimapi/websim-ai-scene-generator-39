@@ -1,4 +1,4 @@
-import { addAssetToScene } from './state.js';
+import { addAssetToScene, sceneState, markAsDirty } from './state.js';
 import { redrawCanvas, getLogicalCoordsFromEvent } from './editor.js';
 import { selectLibraryAsset } from './ui.js';
 
@@ -67,22 +67,37 @@ function setupMobileDrag(assetLibrary) {
             const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
             
             if (dropTarget && dropTarget.id === 'editor-canvas') {
-                const pos = getLogicalCoordsFromEvent(e);
+                if (dragData.type === 'Background') {
+                    if (sceneState.backgrounds.length < 3) {
+                        sceneState.backgrounds.push(dragData.url);
+                        markAsDirty();
+                        redrawCanvas();
+                        
+                        const libraryItem = document.querySelector(`.library-asset[data-asset-url="${dragData.url}"]`);
+                        if (libraryItem) {
+                            selectLibraryAsset(libraryItem);
+                        }
+                    } else {
+                        alert('Maximum of 3 background layers reached.');
+                    }
+                } else {
+                    const pos = getLogicalCoordsFromEvent(e);
 
-                const LOGICAL_WIDTH = 1920;
-                const assetSize = LOGICAL_WIDTH / 15;
-                
-                 const newAsset = {
-                    ...dragData,
-                    id: `asset_${Date.now()}`,
-                    x: pos.x - (assetSize / 2),
-                    y: pos.y - (assetSize / 2),
-                    width: assetSize,
-                    height: assetSize,
-                    name: `${dragData.type} - ${(dragData.prompt || 'Untitled').substring(0, 15)}...`
-                };
-                addAssetToScene(newAsset);
-                redrawCanvas();
+                    const LOGICAL_WIDTH = 1920;
+                    const assetSize = LOGICAL_WIDTH / 15;
+                    
+                     const newAsset = {
+                        ...dragData,
+                        id: `asset_${Date.now()}`,
+                        x: pos.x - (assetSize / 2),
+                        y: pos.y - (assetSize / 2),
+                        width: assetSize,
+                        height: assetSize,
+                        name: `${dragData.type} - ${(dragData.prompt || 'Untitled').substring(0, 15)}...`
+                    };
+                    addAssetToScene(newAsset);
+                    redrawCanvas();
+                }
             }
 
             document.body.removeChild(touchDragGhost);
